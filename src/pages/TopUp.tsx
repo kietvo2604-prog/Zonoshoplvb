@@ -182,7 +182,7 @@ const TopUp = () => {
                   </div>
                   <div className="border-t border-border pt-4 mt-2 space-y-1">
                     <p className="font-bold text-foreground">
-                      Tên chủ tài khoản: <span className="text-primary">NGUYỄN NGỌC QUY</span>
+                      Tên chủ tài khoản: <span className="text-primary">NGUYỄN NGỌC QUÝ</span>
                     </p>
                     <p className="font-bold text-foreground">
                       Số tài khoản: <span className="text-primary">0365739178</span>
