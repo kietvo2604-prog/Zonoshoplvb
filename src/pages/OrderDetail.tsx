@@ -6,17 +6,7 @@ import Footer from "@/components/Footer";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { ShoppingBag, ArrowLeft, Copy, Check, Loader2, AlertCircle, Clock, User, Lock } from "lucide-react";
-import accIcon1 from "@/assets/account-icon-1.png";
-import accIcon2 from "@/assets/account-icon-2.png";
-import accIcon3 from "@/assets/account-icon-3.png";
-
-const ACC_ICONS = [accIcon1, accIcon2, accIcon3];
-const pickIcon = (seed: string, i: number) => {
-  let h = 0;
-  const s = `${seed}-${i}`;
-  for (let k = 0; k < s.length; k++) h = (h * 31 + s.charCodeAt(k)) >>> 0;
-  return ACC_ICONS[h % ACC_ICONS.length];
-};
+// Đã XOÁ import 3 ảnh acc icon
 
 const formatVND = (n: number) => n.toLocaleString("vi-VN") + "đ";
 
@@ -70,7 +60,7 @@ const OrderDetail = () => {
         <Header />
         <main className="container mx-auto px-4 py-16 text-center">
           <AlertCircle className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-          <p className="text-muted-foreground mb-4">Vui lòng đăng nhập.</p>
+          <p className="text-muted-foreground mb-4">Vui lòng đăng nhập để xem chi tiết đơn hàng.</p>
           <a href="/dang-nhap" className="inline-block px-6 py-3 gradient-primary text-primary-foreground font-semibold rounded-lg text-sm">
             Đăng nhập
           </a>
@@ -122,7 +112,9 @@ const OrderDetail = () => {
             </div>
             <div>
               <h1 className="font-display text-lg font-bold text-foreground">CHI TIẾT ĐƠN HÀNG</h1>
-              <p className="text-xs text-muted-foreground">Mã: <span className="font-mono font-bold text-primary">{order.order_code || order.id.slice(0, 8).toUpperCase()}</span></p>
+              <p className="text-xs text-muted-foreground">
+                Mã: <span className="font-mono font-bold text-primary">{order.order_code || order.id.slice(0, 8).toUpperCase()}</span>
+              </p>
             </div>
           </div>
 
@@ -153,11 +145,11 @@ const OrderDetail = () => {
             </div>
           </div>
 
-          {/* Account credentials */}
+          {/* Account credentials - ĐÃ XOẢ ẢNH BÊN CẠNH */}
           <div className="bg-muted border border-border rounded-xl p-5 space-y-4">
             <div className="flex items-center gap-2">
               <Lock className="w-4 h-4 text-primary" />
-              <h2 className="font-bold text-foreground text-sm">THÔNG TIN ĐƠN HÀNG</h2>
+              <h2 className="font-bold text-foreground text-sm">THÔNG TIN TÀI KHOẢN</h2>
             </div>
 
             {accountInfo ? (
@@ -166,10 +158,10 @@ const OrderDetail = () => {
                   {lines.map((line: string, i: number) => (
                     <div key={i} className="bg-background border border-border rounded-lg p-3">
                       <div className="flex items-center justify-between gap-2">
+                        {/* ĐÃ XOÁ ẢNH <img ... /> */}
                         <div className="flex items-center gap-2 min-w-0 flex-1">
-                          <img src={pickIcon(order.id, i)} alt="" className="w-7 h-7 object-contain shrink-0" />
                           <span className="text-xs font-bold text-primary shrink-0 w-5">{i + 1}.</span>
-                          <span className="text-sm font-mono text-foreground truncate">{line}</span>
+                          <span className="text-sm font-mono text-foreground break-all">{line}</span>
                         </div>
                         <button
                           onClick={() => handleCopy(line, i)}
@@ -207,4 +199,4 @@ const OrderDetail = () => {
   );
 };
 
-export default OrderDetail;
+export default OrderDetail;s
