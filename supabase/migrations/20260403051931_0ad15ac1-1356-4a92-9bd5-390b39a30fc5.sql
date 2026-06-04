@@ -12,7 +12,7 @@ CREATE POLICY "Anyone can view shop settings" ON public.shop_settings FOR SELECT
 CREATE POLICY "Admins can manage shop settings" ON public.shop_settings FOR ALL TO authenticated USING (has_role(auth.uid(), 'admin')) WITH CHECK (has_role(auth.uid(), 'admin'));
 
 INSERT INTO public.shop_settings (key, value) VALUES 
-  ('shop_title', 'SHOPKIETZ - SHOP ACC BLOX FRUITS, ACC RANDOM, ROBUX UY TÍN'),
+  ('shop_title', 'ZONOshop - SHOP ACC BLOX FRUITS, ACC RANDOM, ROBUX UY TÍN'),
   ('shop_subtitle_1', '🔥 Giao dịch tự động 24/7 – Mua là có ngay'),
   ('shop_subtitle_2', '🛡️ Bảo mật tuyệt đối – Cam kết uy tín'),
   ('shop_subtitle_3', '💰 Giá cả học sinh – Chất lượng hàng đầu')

@@ -2,7 +2,7 @@ import { Shield, MessageCircle, Users, ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
-const DEFAULT_TITLE = "SHOPKIETZ - SHOP ACC BLOX FRUITS, ACC RANDOM, ROBUX UY TÍN";
+const DEFAULT_TITLE = "ZONOshop - SHOP ACC BLOX FRUITS, ACC RANDOM, ROBUX UY TÍN";
 const DEFAULT_DESC = "🔥 Giao dịch tự động 24/7 – Mua là có ngay\n🛡️ Bảo mật tuyệt đối – Cam kết uy tín\n💰 Giá cả học sinh – Chất lượng hàng đầu";
 
 const AnnouncementBanner = () => {

@@ -68,11 +68,11 @@ const Header = () => {
       <div className="border-b border-border/50 bg-muted/30">
         <div className="container mx-auto px-4 py-1.5 flex items-center justify-between">
           <div className="flex items-center gap-4 text-xs text-muted-foreground">
-            <a href="https://discord.gg/shopkietz" target="_blank" rel="noopener" className="flex items-center gap-1 hover:text-primary transition-colors">
-              <Phone className="w-3 h-3" /> Discord: dsc.gg/shopkietz
+            <a href="https://discord.gg/ZONOshop" target="_blank" rel="noopener" className="flex items-center gap-1 hover:text-primary transition-colors">
+              <Phone className="w-3 h-3" /> Discord: dsc.gg/ZONOshop
             </a>
             <span className="hidden sm:flex items-center gap-1">
-              <Mail className="w-3 h-3" /> support@shopkietz.com
+              <Mail className="w-3 h-3" /> support@ZONOshop.com
             </span>
           </div>
           <ThemeToggle />

@@ -8,7 +8,7 @@ Yêu cầu rất lớn nên mình chia làm **6 đợt (PR)**, mỗi đợt làm
 ## Đợt 2 — Admin "Thông báo" popup + "Logo shop"
 - Popup chào mừng (ảnh 1): bảng `shop_settings` đã có → thêm key `welcome_popup` (JSON: title, content, links). Trang chủ hiện popup, có nút "Không hiển thị lại" (localStorage) + "Đóng".
 - Tab admin mới **Thông báo**: rich-text + danh sách dòng nội dung + bật/tắt.
-- Tab admin **Logo Shop**: upload ảnh logo → `shop_settings.logo_url`. Nếu chưa set → hiện placeholder "ảnh lỗi". Xoá hardcode "ShopKietZ" → dùng setting này.
+- Tab admin **Logo Shop**: upload ảnh logo → `shop_settings.logo_url`. Nếu chưa set → hiện placeholder "ảnh lỗi". Xoá hardcode "ZONOshop" → dùng setting này.
 
 ## Đợt 3 — Danh mục (sort cố định + contrast)
 - Admin kéo-thả `sort_order` của categories, vị trí cố định (không tự đẩy theo acc mới).

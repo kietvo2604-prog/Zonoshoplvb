@@ -8,7 +8,7 @@ const Footer = () => {
           <div>
             <div className="flex items-center gap-2 mb-4">
               <Gamepad2 className="w-6 h-6 text-primary" />
-              <span className="font-display text-lg font-bold text-primary neon-text">ShopKietZ</span>
+              <span className="font-display text-lg font-bold text-primary neon-text">ZONOshop</span>
             </div>
             <p className="text-sm text-muted-foreground">
               Hệ thống cung cấp dịch vụ game Roblox tự động hàng đầu. Uy tín tạo nên thương hiệu!
@@ -34,7 +34,7 @@ const Footer = () => {
               </div>
               <div className="flex items-center gap-2">
                 <MessageCircle className="w-4 h-4 text-secondary" />
-                <span>Facebook: <a href="https://www.facebook.com/ank.kiet.2604" target="_blank" rel="noopener noreferrer nofollow" className="text-secondary hover:underline font-medium">ShopKietZ Official ↗</a></span>
+                <span>Facebook: <a href="https://www.facebook.com/ank.kiet.2604" target="_blank" rel="noopener noreferrer nofollow" className="text-secondary hover:underline font-medium">ZONOshop Official ↗</a></span>
               </div>
               <div className="flex items-center gap-2">
                 <Globe className="w-4 h-4 text-neon-orange" />
@@ -45,7 +45,7 @@ const Footer = () => {
         </div>
 
         <div className="mt-8 pt-6 border-t border-border text-center text-xs text-muted-foreground">
-          © 2026 ShopKietZ. Uy tín tạo nên thương hiệu! 🎮
+          © 2026 ZONOshop. Uy tín tạo nên thương hiệu! 🎮
 
         </div>
       </div>
