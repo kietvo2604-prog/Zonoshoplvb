@@ -46,6 +46,7 @@ const Footer = () => {
 
         <div className="mt-8 pt-6 border-t border-border text-center text-xs text-muted-foreground">
           © 2026 ShopKietZ. Uy tín tạo nên thương hiệu! 🎮
+
         </div>
       </div>
     </footer>
@@ -53,3 +54,4 @@ const Footer = () => {
 };
 
 export default Footer;
+

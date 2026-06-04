@@ -1,4 +1,4 @@
-import kietzImg from "@/assets/kietz-badge.png";
+import kietzImg from "@/assets/NNQ.png";
 
 const KietzBadge = () => {
   return (
