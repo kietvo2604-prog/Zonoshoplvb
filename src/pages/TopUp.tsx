@@ -18,7 +18,7 @@ const cardTypes = [
 ];
 
 const denominations = [10000, 20000, 50000, 100000, 200000, 500000];
-const banks = [{ name: "MB Bank", number: "0987672604", holder: "VO ANH KIET", qr: mbbankQR }];
+const banks = [{ name: "MB Bank", number: "0365739178", holder: "VO ANH KIET", qr: mbbankQR }];
 const formatVND = (n: number) => n.toLocaleString("vi-VN") + "đ";
 
 type TopupRequest = { id: string; amount: number; method: string; status: string; note: string | null; created_at: string };
@@ -82,7 +82,7 @@ const TopUp = () => {
   const currentCard = cardTypes.find((c) => c.id === selectedCard)!;
 
   const sepayContent = transferCode || "NNQ000";
-  const sepayQr = useMemo(() => `https://qr.sepay.vn/img?acc=0987672604&bank=MB&amount=&des=${encodeURIComponent(sepayContent)}`, [sepayContent]);
+  const sepayQr = useMemo(() => `https://qr.sepay.vn/img?acc=0365739178&bank=MB&amount=&des=${encodeURIComponent(sepayContent)}`, [sepayContent]);
 
   useEffect(() => {
     supabase.from("shop_settings").select("value").eq("key", "charge_card_api").maybeSingle().then(({ data }) => setActiveApi(data?.value || "gachthefast"));
@@ -164,7 +164,7 @@ const TopUp = () => {
               <div className="grid md:grid-cols-3 gap-6 items-start text-center">
                 {banks.map((bank) => <div key={bank.name} className="bg-background border border-border p-4 space-y-3"><img src={bank.qr} alt={`${bank.name} QR`} className="w-44 h-44 mx-auto bg-white object-contain" /><p className="font-bold">{bank.name}</p><p className="text-sm font-mono">{bank.number}</p><button onClick={() => handleCopy(bank.number, bank.name)} className="px-3 py-2 galaxy-button rounded-lg text-primary-foreground text-xs font-bold">{copiedField === bank.name ? "Đã copy" : "Copy STK"}</button><p className="text-xs text-muted-foreground">Chủ TK: {bank.holder}</p></div>)}
                 <div className="bg-background border border-primary p-4 space-y-3 neon-border"><img src={sepayQr} alt="QR SePay" className="w-44 h-44 mx-auto bg-white object-contain" /><p className="font-bold text-primary">SePay tự động</p><p className="text-xs text-muted-foreground">Nội dung chuyển khoản</p><code className="block text-lg text-yellow-500 font-bold">{sepayContent}</code><button onClick={() => handleCopy(sepayContent, "sepay")} className="px-3 py-2 galaxy-button rounded-lg text-primary-foreground text-xs font-bold">{copiedField === "sepay" ? "Đã copy" : "Copy nội dung"}</button></div>
-                <div className="bg-background border border-border p-4 space-y-3"><img src={zalopayQR} alt="ZaloPay QR" className="w-44 h-44 mx-auto bg-white object-contain" /><p className="font-bold">ZaloPay</p><p className="text-sm font-mono">0987672604</p><button onClick={() => handleCopy("0987672604", "zlp")} className="px-3 py-2 galaxy-button rounded-lg text-primary-foreground text-xs font-bold">{copiedField === "zlp" ? "Đã copy" : "Copy"}</button></div>
+                <div className="bg-background border border-border p-4 space-y-3"><img src={zalopayQR} alt="ZaloPay QR" className="w-44 h-44 mx-auto bg-white object-contain" /><p className="font-bold">ZaloPay</p><p className="text-sm font-mono">0365739178</p><button onClick={() => handleCopy("0365739178", "zlp")} className="px-3 py-2 galaxy-button rounded-lg text-primary-foreground text-xs font-bold">{copiedField === "zlp" ? "Đã copy" : "Copy"}</button></div>
               </div>
             </section>
             {user && <HistoryTable rows={recentTopups.filter(t => !t.method.includes("Thẻ cào"))} title="Lịch sử nạp ngân hàng" />}

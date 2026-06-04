@@ -30,7 +30,7 @@ const Footer = () => {
             <div className="space-y-3 text-sm text-muted-foreground">
               <div className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-primary" />
-                <span>Hotline/Zalo: <a href="https://zalo.me/0987672604" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Liên hệ Admin</a></span>
+                <span>Hotline/Zalo: <a href="https://zalo.me/0365739178" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Liên hệ Admin</a></span>
               </div>
               <div className="flex items-center gap-2">
                 <MessageCircle className="w-4 h-4 text-secondary" />

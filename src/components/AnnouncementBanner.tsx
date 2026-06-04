@@ -43,7 +43,7 @@ const AnnouncementBanner = () => {
         <div className="flex items-center gap-2">
           <Users className="w-5 h-5 text-neon-orange" />
           <span className="font-semibold text-foreground">LIÊN HỆ HỖ TRỢ QUA ZALO</span>
-          <a href="https://zalo.me/0987672604" target="_blank" rel="noopener noreferrer" className="text-neon-orange font-bold hover:underline flex items-center gap-1">
+          <a href="https://zalo.me/0365739178" target="_blank" rel="noopener noreferrer" className="text-neon-orange font-bold hover:underline flex items-center gap-1">
             TẠI ĐÂY <ArrowRight className="w-3.5 h-3.5" />
           </a>
         </div>
