@@ -79,14 +79,14 @@ const Header = () => {
         </div>
       </div>
 
-     <div className="container mx-auto px-4 py-3">
-  <div className="flex items-center justify-between gap-3 sm:gap-4">
-    <a href="/" className="flex items-center gap-2 shrink-0 min-w-0">
-      {logoUrl && (
-        <img src={logoUrl} alt="Logo" className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg object-contain shrink-0" />
-      )}
-      <AnimatedLogo />
-    </a>
+      <div className="container mx-auto px-4 py-3">
+        <div className="flex items-center justify-between gap-3 sm:gap-4">
+          <a href="/" className="flex items-center gap-2 shrink-0 min-w-0">
+            {logoUrl && (
+              <img src={logoUrl} alt="Logo" className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg object-contain shrink-0" />
+            )}
+            <AnimatedLogo />
+          </a>
 
           <form onSubmit={handleSearch} className="flex-1 max-w-xl hidden md:block">
             <div className="relative">
@@ -104,9 +104,12 @@ const Header = () => {
               <div className="relative" ref={userMenuRef}>
                 <button onClick={() => setUserMenuOpen(!userMenuOpen)}
                   className="flex items-center gap-2 px-2 sm:px-3 py-2 bg-muted border border-border rounded-lg hover:bg-border transition-colors">
-                  <div className="w-7 h-7 rounded-full gradient-primary flex items-center justify-center text-primary-foreground text-xs font-bold">
+                  
+                  {/* Avatar - TO HƠN (từ 28px lên 40px) */}
+                  <div className="w-10 h-10 rounded-full gradient-primary flex items-center justify-center text-primary-foreground text-sm font-bold shadow-md">
                     {displayName.charAt(0).toUpperCase()}
                   </div>
+                  
                   <span className="hidden sm:inline text-sm font-medium text-foreground max-w-[100px] truncate">{displayName}</span>
                   <ChevronDown className={`w-3 h-3 text-muted-foreground transition-transform ${userMenuOpen ? "rotate-180" : ""}`} />
                 </button>
