@@ -18,7 +18,7 @@ const cardTypes = [
 ];
 
 const denominations = [10000, 20000, 50000, 100000, 200000, 500000];
-const banks = [{ name: "MB Bank", number: "0365739178", holder: "VO ANH KIET", qr: mbbankQR }];
+const banks = [{ name: "MB Bank", number: "0365739178", holder: "NGUYEN NGOC QUY", qr: mbbankQR }];
 const formatVND = (n: number) => n.toLocaleString("vi-VN") + "đ";
 
 type TopupRequest = { id: string; amount: number; method: string; status: string; note: string | null; created_at: string };
