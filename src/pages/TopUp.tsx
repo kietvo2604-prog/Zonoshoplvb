@@ -170,9 +170,9 @@ const TopUp = () => {
                   <p className="font-bold text-xl text-primary">SePay tự động</p>
                   <div className="space-y-2">
                     <p className="text-sm text-muted-foreground">Nội dung chuyển khoản</p>
-                    <code className="block text-3xl md:text-5xl lg:text-6xl font-bold text-yellow-500 bg-muted px-6 py-4 rounded-xl inline-block mx-auto tracking-wider shadow-inner">
-                      {sepayContent}
-                    </code>
+                    <code className="block text-lg md:text-xl lg:text-2xl font-bold text-yellow-500 bg-muted px-3 py-1.5 rounded-lg inline-block mx-auto tracking-normal">
+                     {sepayContent}
+                     </code>
                     <button 
                       onClick={() => handleCopy(sepayContent, "sepay")} 
                       className="px-5 py-2.5 galaxy-button rounded-lg text-primary-foreground text-sm font-bold mt-3"
