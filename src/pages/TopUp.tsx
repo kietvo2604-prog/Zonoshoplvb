@@ -1,6 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import zalopayQR from "@/assets/zalopay-qr.png";
-import mbbankQR from "@/assets/mbbank-qr.png";
 import TopBar from "@/components/TopBar";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -18,7 +16,6 @@ const cardTypes = [
 ];
 
 const denominations = [10000, 20000, 50000, 100000, 200000, 500000];
-const banks = [{ name: "MB Bank", number: "0365739178", holder: "NGUYEN NGOC QUY", qr: mbbankQR }];
 const formatVND = (n: number) => n.toLocaleString("vi-VN") + "đ";
 
 type TopupRequest = { id: string; amount: number; method: string; status: string; note: string | null; created_at: string };
@@ -159,14 +156,42 @@ const TopUp = () => {
             <section className="bg-card border border-border neon-card overflow-hidden">
               <table className="w-full text-sm"><thead><tr className="bg-card border-b border-border"><th className="px-4 py-3 text-left">#</th><th className="px-4 py-3 text-left">Số tiền nạp lớn hơn hoặc bằng</th><th className="px-4 py-3 text-left">Khuyến mãi thêm</th></tr></thead><tbody>{[[1000000,15],[100000,10],[50000,6],[10000,5]].map((r,i)=><tr key={i} className="border-b border-border"><td className="px-4 py-3">{i+1}</td><td className="px-4 py-3 text-primary font-bold">{formatVND(r[0])}</td><td className="px-4 py-3 text-destructive font-bold">{r[1]}%</td></tr>)}</tbody></table>
             </section>
+            
+            {/* Chỉ giữ SePay - đã xoá MB Bank và ZaloPay */}
             <section className="bg-card border border-border p-6 neon-card space-y-5">
-              <h2 className="text-xl font-bold text-foreground flex items-center gap-2"><Landmark className="w-5 h-5 text-primary" /> Nạp tiền theo hoá đơn</h2>
-              <div className="grid md:grid-cols-3 gap-6 items-start text-center">
-                {banks.map((bank) => <div key={bank.name} className="bg-background border border-border p-4 space-y-3"><img src={bank.qr} alt={`${bank.name} QR`} className="w-44 h-44 mx-auto bg-white object-contain" /><p className="font-bold">{bank.name}</p><p className="text-sm font-mono">{bank.number}</p><button onClick={() => handleCopy(bank.number, bank.name)} className="px-3 py-2 galaxy-button rounded-lg text-primary-foreground text-xs font-bold">{copiedField === bank.name ? "Đã copy" : "Copy STK"}</button><p className="text-xs text-muted-foreground">Chủ TK: {bank.holder}</p></div>)}
-                <div className="bg-background border border-primary p-4 space-y-3 neon-border"><img src={sepayQr} alt="QR SePay" className="w-44 h-44 mx-auto bg-white object-contain" /><p className="font-bold text-primary">SePay tự động</p><p className="text-xs text-muted-foreground">Nội dung chuyển khoản</p><code className="block text-lg text-yellow-500 font-bold">{sepayContent}</code><button onClick={() => handleCopy(sepayContent, "sepay")} className="px-3 py-2 galaxy-button rounded-lg text-primary-foreground text-xs font-bold">{copiedField === "sepay" ? "Đã copy" : "Copy nội dung"}</button></div>
-                <div className="bg-background border border-border p-4 space-y-3"><img src={zalopayQR} alt="ZaloPay QR" className="w-44 h-44 mx-auto bg-white object-contain" /><p className="font-bold">ZaloPay</p><p className="text-sm font-mono">0365739178</p><button onClick={() => handleCopy("0365739178", "zlp")} className="px-3 py-2 galaxy-button rounded-lg text-primary-foreground text-xs font-bold">{copiedField === "zlp" ? "Đã copy" : "Copy"}</button></div>
+              <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
+                <Landmark className="w-5 h-5 text-primary" /> Nạp tiền theo hoá đơn
+              </h2>
+              <div className="flex flex-col items-center justify-center gap-6 max-w-md mx-auto">
+                <div className="bg-background border-2 border-primary p-6 space-y-4 rounded-xl shadow-lg w-full text-center">
+                  <div className="flex justify-center">
+                    <img src={sepayQr} alt="QR SePay" className="w-48 h-48 bg-white object-contain rounded-xl p-2 shadow-md" />
+                  </div>
+                  <p className="font-bold text-xl text-primary">SePay tự động</p>
+                  <div className="space-y-2">
+                    <p className="text-sm text-muted-foreground">Nội dung chuyển khoản</p>
+                    <code className="block text-3xl md:text-5xl lg:text-6xl font-bold text-yellow-500 bg-muted px-6 py-4 rounded-xl inline-block mx-auto tracking-wider shadow-inner">
+                      {sepayContent}
+                    </code>
+                    <button 
+                      onClick={() => handleCopy(sepayContent, "sepay")} 
+                      className="px-5 py-2.5 galaxy-button rounded-lg text-primary-foreground text-sm font-bold mt-3"
+                    >
+                      {copiedField === "sepay" ? "✅ Đã copy" : "📋 Copy nội dung"}
+                    </button>
+                  </div>
+                  <div className="border-t border-border pt-4 mt-2 space-y-1">
+                    <p className="font-bold text-foreground">
+                      Tên chủ tài khoản: <span className="text-primary">NGUYỄN NGỌC QUY</span>
+                    </p>
+                    <p className="font-bold text-foreground">
+                      Số tài khoản: <span className="text-primary">0365739178</span>
+                    </p>
+                  </div>
+                </div>
               </div>
             </section>
+            
             {user && <HistoryTable rows={recentTopups.filter(t => !t.method.includes("Thẻ cào"))} title="Lịch sử nạp ngân hàng" />}
           </>
         ) : (
