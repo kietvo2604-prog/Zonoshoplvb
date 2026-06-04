@@ -199,4 +199,4 @@ const OrderDetail = () => {
   );
 };
 
-export default OrderDetail;s
+export default OrderDetail;
