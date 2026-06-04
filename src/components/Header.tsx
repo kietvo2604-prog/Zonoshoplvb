@@ -79,16 +79,14 @@ const Header = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-3">
-        <div className="flex items-center justify-between gap-3 sm:gap-4">
-          <a href="/" className="flex items-center gap-2 shrink-0 min-w-0">
-            {logoUrl ? (
-              <img src={logoUrl} alt="Logo" className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg object-contain shrink-0" />
-            ) : (
-              <Gamepad2 className="w-9 h-9 sm:w-10 sm:h-10 text-primary neon-text animate-spin-slow shrink-0" />
-            )}
-            <AnimatedLogo />
-          </a>
+     <div className="container mx-auto px-4 py-3">
+  <div className="flex items-center justify-between gap-3 sm:gap-4">
+    <a href="/" className="flex items-center gap-2 shrink-0 min-w-0">
+      {logoUrl && (
+        <img src={logoUrl} alt="Logo" className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg object-contain shrink-0" />
+      )}
+      <AnimatedLogo />
+    </a>
 
           <form onSubmit={handleSearch} className="flex-1 max-w-xl hidden md:block">
             <div className="relative">

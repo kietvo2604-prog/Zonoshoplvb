@@ -4,7 +4,7 @@ const AnimatedLogo = () => {
   return (
     <div className="flex flex-col items-start leading-none select-none">
       <span className="text-[8px] md:text-[10px] lg:text-xs font-bold tracking-[0.2em] uppercase text-primary/70">
-        Shop Acc Uy Tín Nhất
+       
       </span>
       <div className="relative">
         {/* Lớp glow phía sau logo */}
