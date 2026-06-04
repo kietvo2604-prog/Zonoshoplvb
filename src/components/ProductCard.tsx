@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ShoppingCart, Eye, Package, Loader2 } from "lucide-react";
+import { ShoppingCart, Eye, Package, Loader2, Zap, User, TrendingUp, Clock } from "lucide-react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -59,7 +59,6 @@ const ProductCard = ({ id, name, price, numericPrice, stock, description, catego
     window.location.href = "/lich-su-cay-thue";
   };
 
-
   const handleBuy = async (quantity: number, discountCode?: string) => {
     if (!user) {
       toast({ title: "Vui lòng đăng nhập", variant: "destructive" });
@@ -96,8 +95,6 @@ const ProductCard = ({ id, name, price, numericPrice, stock, description, catego
       return;
     }
 
-
-
     setBuying(false);
     setPurchasedQuantity(result.quantity || quantity);
     setPurchasedOrderCode(result.order_code);
@@ -107,50 +104,107 @@ const ProductCard = ({ id, name, price, numericPrice, stock, description, catego
 
   return (
     <>
-      <div className={`bg-card border rounded-md overflow-hidden hover:neon-card transition-all duration-300 group ${isBoost ? "border-accent/50 neon-purple" : "border-border hover:border-primary/50"}`}>
-        <div className={`${isBoost ? "gradient-accent" : "bg-muted"} px-4 py-4 flex items-center gap-3 border-b border-border`}>
-          {imageUrl && <img src={imageUrl} alt={name} className="w-12 h-12 rounded object-cover border border-border shrink-0" />}
-          <h3 className="font-semibold text-foreground text-base leading-snug line-clamp-2 group-hover:text-primary transition-colors">{name}</h3>
+      <div className={`group relative bg-card border-2 rounded-xl overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl ${
+        isBoost 
+          ? "border-orange-500/50 hover:border-orange-500 shadow-orange-500/20" 
+          : "border-primary/30 hover:border-primary shadow-primary/20"
+      }`}>
+        
+        {/* BADGE PHÂN LOẠI - NỔI BẬT */}
+        <div className={`absolute top-3 right-3 z-10 px-2.5 py-1 rounded-full text-xs font-bold shadow-lg ${
+          isBoost 
+            ? "bg-gradient-to-r from-orange-500 to-pink-500 text-white" 
+            : "bg-gradient-to-r from-primary to-secondary text-white"
+        }`}>
+          {isBoost ? (
+            <span className="flex items-center gap-1">
+              <Zap className="w-3 h-3" /> CÀY THUÊ
+            </span>
+          ) : (
+            <span className="flex items-center gap-1">
+              <User className="w-3 h-3" /> TÀI KHOẢN
+            </span>
+          )}
         </div>
 
-        {imageUrl && (
-          <div className="aspect-video w-full overflow-hidden bg-muted hidden">
-            <img src={imageUrl} alt={name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+        {/* HEADER - MÀU SẮC KHÁC BIỆT */}
+        <div className={`px-4 py-4 flex items-center gap-3 border-b ${
+          isBoost ? "bg-gradient-to-r from-orange-500/10 to-pink-500/10 border-orange-500/30" : "bg-muted border-border"
+        }`}>
+          {imageUrl && <img src={imageUrl} alt={name} className="w-12 h-12 rounded object-cover border border-border shrink-0" />}
+          <div className="flex-1">
+            <h3 className={`font-bold text-base leading-snug line-clamp-2 transition-colors ${
+              isBoost ? "text-orange-400 group-hover:text-orange-300" : "text-foreground group-hover:text-primary"
+            }`}>
+              {name}
+            </h3>
+            {isBoost && (
+              <p className="text-xs text-orange-400/70 flex items-center gap-1 mt-1">
+                <Clock className="w-3 h-3" /> Dịch vụ cày thuê 24/7
+              </p>
+            )}
           </div>
-        )}
+        </div>
 
+        {/* NỘI DUNG */}
         <div className="p-4 space-y-4">
-          <p className="text-sm text-foreground line-clamp-5 whitespace-pre-line min-h-[88px]">{description}</p>
+          <p className={`text-sm line-clamp-4 min-h-[80px] ${isBoost ? "text-muted-foreground" : "text-foreground"}`}>
+            {description}
+          </p>
 
-          <div className="grid grid-cols-3 items-center text-center border-y border-border py-3 gap-2">
-            <div className="space-y-1 border-r border-border"><p className="text-xs font-bold text-foreground">Quốc gia</p><p className="text-lg">🇻🇳</p></div>
-            <div className="space-y-1 border-r border-border"><p className="text-xs font-bold text-foreground">Hiện có</p><span className="inline-flex w-6 h-6 items-center justify-center rounded-full bg-primary text-primary-foreground text-xs font-bold">{isBoost ? "∞" : stock}</span></div>
-            <div className="space-y-1"><p className="text-xs font-bold text-foreground">Giá</p><span className="text-lg font-semibold text-yellow-500">{user ? price : "Ẩn"}</span></div>
+          {/* THÔNG SỐ - KHÁC BIỆT */}
+          <div className={`grid ${isBoost ? "grid-cols-2" : "grid-cols-3"} items-center text-center border-y py-3 gap-2 ${
+            isBoost ? "border-orange-500/30" : "border-border"
+          }`}>
+            <div className="space-y-1 border-r border-border">
+              <p className="text-xs font-bold text-foreground">Quốc gia</p>
+              <p className="text-lg">🇻🇳</p>
+            </div>
+            {!isBoost && (
+              <div className="space-y-1 border-r border-border">
+                <p className="text-xs font-bold text-foreground">Hiện có</p>
+                <span className="inline-flex w-6 h-6 items-center justify-center rounded-full bg-primary text-primary-foreground text-xs font-bold">
+                  {stock}
+                </span>
+              </div>
+            )}
+            <div className="space-y-1">
+              <p className="text-xs font-bold text-foreground">Giá</p>
+              <span className={`text-lg font-bold ${isBoost ? "text-orange-400" : "text-yellow-500"}`}>
+                {user ? price : "Ẩn"}
+              </span>
+            </div>
           </div>
 
-          <div className="space-y-2">
-            <div className="grid grid-cols-[auto_1fr] gap-2">
-              {id && (
-                <Link to={`/san-pham/${id}`} className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-muted border border-border hover:bg-border transition-colors text-sm font-semibold text-foreground" title="Chi tiết">
-                  <Eye className="w-4 h-4 text-muted-foreground" /> Hình ảnh mô tả
-                </Link>
-              )}
-              {user ? (
-                <button
-                  onClick={() => isBoost ? setShowBoost(true) : setShowConfirm(true)}
-                  disabled={buying || (!isBoost && stock <= 0)}
-                  className="flex items-center justify-center gap-1.5 px-3 py-2 galaxy-button rounded-full text-sm font-bold text-primary-foreground hover:opacity-90 transition-opacity disabled:opacity-50"
-                >
-                  {buying ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <ShoppingCart className="w-3.5 h-3.5" />}
-                  {buying ? "Đang xử lý..." : !isBoost && stock <= 0 ? "Hết hàng" : isBoost ? "Đặt cày" : "Mua ngay"}
-                </button>
-
-              ) : (
-                <Link to="/dang-nhap" className="flex items-center gap-1.5 px-3 py-2 galaxy-button rounded-lg text-xs font-bold text-primary-foreground hover:opacity-90 transition-opacity">
-                  <ShoppingCart className="w-3.5 h-3.5" /> Đăng nhập
-                </Link>
-              )}
-            </div>
+          {/* NÚT HÀNH ĐỘNG - KHÁC BIỆT RÕ RÀNG */}
+          <div className="grid grid-cols-[auto_1fr] gap-2">
+            {id && (
+              <Link to={`/san-pham/${id}`} className={`flex items-center justify-center gap-2 px-3 py-2 rounded-lg border transition-all text-sm font-semibold ${
+                isBoost 
+                  ? "border-orange-500/50 bg-orange-500/10 text-orange-400 hover:bg-orange-500/20" 
+                  : "border-border bg-muted text-foreground hover:bg-border"
+              }`} title="Chi tiết">
+                <Eye className="w-4 h-4" /> Xem chi tiết
+              </Link>
+            )}
+            {user ? (
+              <button
+                onClick={() => isBoost ? setShowBoost(true) : setShowConfirm(true)}
+                disabled={buying || (!isBoost && stock <= 0)}
+                className={`flex items-center justify-center gap-1.5 px-3 py-2 rounded-full text-sm font-bold transition-all ${
+                  isBoost
+                    ? "bg-gradient-to-r from-orange-500 to-pink-500 text-white hover:shadow-lg hover:shadow-orange-500/30"
+                    : "gradient-primary text-primary-foreground hover:shadow-lg hover:shadow-primary/30"
+                } hover:opacity-90 disabled:opacity-50`}
+              >
+                {buying ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : isBoost ? <Zap className="w-3.5 h-3.5" /> : <ShoppingCart className="w-3.5 h-3.5" />}
+                {buying ? "Đang xử lý..." : !isBoost && stock <= 0 ? "Hết hàng" : isBoost ? "ĐẶT CÀY THUÊ" : "MUA NGAY"}
+              </button>
+            ) : (
+              <Link to="/dang-nhap" className="flex items-center justify-center gap-1.5 px-3 py-2 gradient-primary rounded-full text-xs font-bold text-primary-foreground hover:opacity-90 transition-opacity">
+                <ShoppingCart className="w-3.5 h-3.5" /> Đăng nhập
+              </Link>
+            )}
           </div>
         </div>
       </div>
@@ -175,8 +229,7 @@ const ProductCard = ({ id, name, price, numericPrice, stock, description, catego
         buying={buying}
       />
 
-
-      {/* Success dialog - account info hidden */}
+      {/* Success dialog */}
       {showAccDialog && (
         <Dialog open={showAccDialog} onOpenChange={setShowAccDialog}>
           <DialogContent className="sm:max-w-md" onPointerDownOutside={(e) => e.preventDefault()}>
