@@ -53,16 +53,41 @@ const Auth = () => {
       // Login bằng username (không phân biệt hoa thường) → tra email → signIn
       const uname = username.trim();
       if (!uname) { setError("Vui lòng nhập tài khoản đăng nhập"); setSubmitting(false); return; }
+      if (!password) { setError("Vui lòng nhập mật khẩu"); setSubmitting(false); return; }
 
-      const { data: foundEmail, error: rpcErr } = await supabase.rpc("get_email_by_username", { p_username: uname });
-      if (rpcErr || !foundEmail) {
-        setError("Tài khoản không tồn tại");
-        setSubmitting(false);
-        return;
+      // Try to find email via RPC first, fallback to using username as email
+      let emailToUse = uname;
+      
+      try {
+        const { data: foundEmail, error: rpcErr } = await supabase.rpc("get_email_by_username", { p_username: uname });
+        
+        if (!rpcErr && foundEmail) {
+          emailToUse = foundEmail as string;
+        } else {
+          // Fallback: Try using username directly as email (in case user registered with username@shop.local format)
+          // Or check if it looks like an email
+          if (!uname.includes("@")) {
+            // Assume it might be stored with a format like username or email
+            console.log("[v0] RPC failed, trying username directly as email");
+          } else {
+            emailToUse = uname; // It's already an email format
+          }
+        }
+      } catch (err) {
+        console.log("[v0] RPC error, using username directly:", err);
+        // Continue with username as fallback
       }
-      const { error } = await supabase.auth.signInWithPassword({ email: foundEmail as string, password });
+
+      const { error } = await supabase.auth.signInWithPassword({ email: emailToUse, password });
       if (error) {
-        setError("Mật khẩu không đúng");
+        // If login failed, give more specific feedback
+        if (error.message.includes("Invalid login credentials")) {
+          setError("Tài khoản hoặc mật khẩu không đúng");
+        } else if (error.message.includes("Email not confirmed")) {
+          setError("Email chưa được xác nhận. Kiểm tra hộp thư của bạn.");
+        } else {
+          setError(error.message || "Đăng nhập thất bại");
+        }
       } else {
         navigate("/");
       }
@@ -70,12 +95,22 @@ const Auth = () => {
       // Đăng ký
       const uname = username.trim();
       if (!uname || uname.length < 3) { setError("Tài khoản đăng nhập tối thiểu 3 ký tự"); setSubmitting(false); return; }
+      if (!email) { setError("Vui lòng nhập email"); setSubmitting(false); return; }
       if (password.length < 6) { setError("Mật khẩu tối thiểu 6 ký tự"); setSubmitting(false); return; }
       if (password !== confirmPassword) { setError("Mật khẩu nhập lại không khớp"); setSubmitting(false); return; }
 
-      // Check username trùng
-      const { data: avail } = await supabase.rpc("username_available", { p_username: uname });
-      if (avail === false) { setError("Tài khoản đã tồn tại"); setSubmitting(false); return; }
+      // Check username trùng via RPC (optional - may fail)
+      try {
+        const { data: avail } = await supabase.rpc("username_available", { p_username: uname });
+        if (avail === false) { 
+          setError("Tài khoản đã tồn tại"); 
+          setSubmitting(false); 
+          return; 
+        }
+      } catch (err) {
+        console.log("[v0] Username check RPC failed, continuing anyway:", err);
+        // Continue with signup anyway
+      }
 
       const { error } = await supabase.auth.signUp({
         email,

@@ -14,8 +14,9 @@ import AdminCTV from "@/components/admin/AdminCTV";
 import AdminShopSettings from "@/components/admin/AdminShopSettings";
 import AdminBoostOrders from "@/components/admin/AdminBoostOrders";
 import AdminCardApiSettings from "@/components/admin/AdminCardApiSettings";
+import AdminRoles from "@/components/admin/AdminRoles";
 
-type Tab = "overview" | "users" | "topups" | "products" | "orders" | "categories" | "discounts" | "ctv" | "shop_settings" | "boost_orders" | "card_api";
+type Tab = "overview" | "users" | "topups" | "products" | "orders" | "categories" | "discounts" | "ctv" | "shop_settings" | "boost_orders" | "card_api" | "roles" | "sepay_qr";
 
 const Admin = () => {
   const { user, signOut, loading } = useAuth();
@@ -61,6 +62,8 @@ const Admin = () => {
     { id: "categories" as Tab, name: "Danh mục", icon: FolderOpen },
     { id: "discounts" as Tab, name: "Mã giảm giá", icon: Tag },
     { id: "ctv" as Tab, name: "Cấp Quyền CTV", icon: UserPlus },
+    { id: "roles" as Tab, name: "Cấp Quyền Admin", icon: Users },
+    { id: "sepay_qr" as Tab, name: "Sepay QR Code", icon: FileText },
     { id: "shop_settings" as Tab, name: "Mô tả Shop", icon: FileText },
   ];
 
