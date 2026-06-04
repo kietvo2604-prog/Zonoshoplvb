@@ -25,7 +25,7 @@ Yêu cầu rất lớn nên mình chia làm **6 đợt (PR)**, mỗi đợt làm
 - Tách `/nap-tien` thành 2 trang: `/nap-the` (ảnh 7: form + Lưu ý + Lịch sử) và `/nap-ngan-hang` (ảnh 6: hướng dẫn + bảng khuyến mãi + logo partner). Cập nhật sidebar.
 - Tab admin **Đối tác thẻ cào**: chọn 1 trong 2 (`thesieure` hoặc `gachthefast`) — radio. Mở form điền `partner_id`, `partner_key`, callback URL; bắt nhập lại mật khẩu admin để xác nhận. Hiển thị logo đại diện mỗi bên. Test ping API → set `is_active = true/false`.
 - Sửa edge function `charge-card` để gọi đúng provider đang active. Logs trạng thái rõ ràng.
-- Tab admin **SePay** (ngân hàng): nhập SePay API key + số TK + tên ngân hàng. Edge function `bank-callback` đã có → cập nhật webhook của SePay khớp `transfer_code` (VAK+3 số) trong content.
+- Tab admin **SePay** (ngân hàng): nhập SePay API key + số TK + tên ngân hàng. Edge function `bank-callback` đã có → cập nhật webhook của SePay khớp `transfer_code` (NNQ+3 số) trong content.
 
 ## Đợt 6 — Export DB sang Supabase riêng của bạn
 - Script tự động chạy lại `pg_dump` mới nhất (sau khi đã chạy các migrations đợt 1-5).

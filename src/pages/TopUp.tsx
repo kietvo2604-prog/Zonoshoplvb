@@ -81,7 +81,7 @@ const TopUp = () => {
   const [activeApi, setActiveApi] = useState("gachthefast");
   const currentCard = cardTypes.find((c) => c.id === selectedCard)!;
 
-  const sepayContent = transferCode || "VAK000";
+  const sepayContent = transferCode || "NNQ000";
   const sepayQr = useMemo(() => `https://qr.sepay.vn/img?acc=0987672604&bank=MB&amount=&des=${encodeURIComponent(sepayContent)}`, [sepayContent]);
 
   useEffect(() => {

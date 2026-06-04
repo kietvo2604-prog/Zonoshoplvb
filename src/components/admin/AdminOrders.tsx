@@ -77,7 +77,7 @@ const AdminOrders = () => {
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Tìm mã đơn VAK, tên sản phẩm..."
+            placeholder="Tìm mã đơn NNQ, tên sản phẩm..."
             className="bg-muted border border-border rounded-lg py-2.5 pl-10 pr-4 text-foreground text-sm focus:outline-none focus:border-primary focus:neon-border transition-all w-72"
           />
         </div>

@@ -56,7 +56,7 @@ DECLARE
   v_product products%ROWTYPE;
   v_profile profiles%ROWTYPE;
   v_order_id uuid;
-  v_order_code text := 'VAK';
+  v_order_code text := 'NNQ';
   v_chars text := 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
   v_i int;
 BEGIN

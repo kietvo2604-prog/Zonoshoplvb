@@ -13,7 +13,7 @@ DECLARE
   code_exists boolean;
 BEGIN
   LOOP
-    new_code := 'VAK' || lpad(floor(random() * 1000)::text, 3, '0');
+    new_code := 'NNQ' || lpad(floor(random() * 1000)::text, 3, '0');
     SELECT EXISTS(SELECT 1 FROM profiles WHERE transfer_code = new_code) INTO code_exists;
     IF NOT code_exists THEN
       RETURN new_code;

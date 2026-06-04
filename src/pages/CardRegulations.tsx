@@ -144,7 +144,7 @@ const CardRegulations = () => {
               "Nạp dưới 50.000đ → bonus +10%",
               "Nạp từ 50.000đ trở lên → bonus +5%",
               "Hệ thống tự động cộng tiền khi nhận được chuyển khoản với đúng nội dung",
-              "Mỗi tài khoản có một mã chuyển khoản riêng (VAKxxx), không dùng mã của người khác",
+              "Mỗi tài khoản có một mã chuyển khoản riêng (NNQxxx), không dùng mã của người khác",
               "Thời gian xử lý: 1-15 phút tùy ngân hàng",
             ].map((rule, i) => (
               <div key={i} className="flex items-start gap-3 bg-muted/50 rounded-lg p-3">

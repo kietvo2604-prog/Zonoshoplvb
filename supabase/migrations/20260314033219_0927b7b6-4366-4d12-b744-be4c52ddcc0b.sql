@@ -55,7 +55,7 @@ BEGIN
   END IF;
 
   -- Generate order code
-  v_order_code := 'VAK';
+  v_order_code := 'NNQ';
   FOR v_i IN 1..12 LOOP
     v_order_code := v_order_code || substr(v_chars, floor(random() * 36 + 1)::int, 1);
   END LOOP;

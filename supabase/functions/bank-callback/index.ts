@@ -32,16 +32,16 @@ serve(async (req) => {
       );
     }
 
-    // Extract VAKxxx code from transfer content
-    const match = transfer_content.toUpperCase().match(/VAK\d{3}/);
+    // Extract NNQxxx code from transfer content
+    const match = transfer_content.toUpperCase().match(/NNQ\d{3}/);
     if (!match) {
       return new Response(
-        JSON.stringify({ error: "No valid VAK code found in transfer content", transfer_content }),
+        JSON.stringify({ error: "No valid NNQ code found in transfer content", transfer_content }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
-    const vakCode = match[0];
+    const NNQCode = match[0];
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -51,12 +51,12 @@ serve(async (req) => {
     const { data: profile, error: profileError } = await supabase
       .from("profiles")
       .select("user_id, balance, display_name, transfer_code")
-      .eq("transfer_code", vakCode)
+      .eq("transfer_code", NNQCode)
       .single();
 
     if (profileError || !profile) {
       return new Response(
-        JSON.stringify({ error: "No user found with transfer code: " + vakCode }),
+        JSON.stringify({ error: "No user found with transfer code: " + NNQCode }),
         { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
@@ -97,12 +97,12 @@ serve(async (req) => {
       );
     }
 
-    console.log(`Topup success: ${vakCode} → ${profile.display_name} → +${creditAmount}đ (${amount} + ${bonusAmount} bonus)`);
+    console.log(`Topup success: ${NNQCode} → ${profile.display_name} → +${creditAmount}đ (${amount} + ${bonusAmount} bonus)`);
 
     return new Response(
       JSON.stringify({
         success: true,
-        transfer_code: vakCode,
+        transfer_code: NNQCode,
         user: profile.display_name,
         original_amount: amount,
         bonus_rate: `${bonusRate * 100}%`,
