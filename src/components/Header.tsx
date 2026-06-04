@@ -199,10 +199,7 @@ const Header = () => {
                   className="flex items-center gap-2 w-full px-4 py-2.5 text-sm text-foreground hover:bg-muted transition-colors">
                   <Smartphone className="w-4 h-4 text-accent" /> Thẻ cào
                 </button>
-                <button onClick={() => { navigate("/nap-ngan-hang"); setTopupOpen(false); }}
-                  className="flex items-center gap-2 w-full px-4 py-2.5 text-sm text-foreground hover:bg-muted transition-colors">
-                  <Wallet className="w-4 h-4 text-primary" /> ATM / Ví điện tử
-                </button>
+              
               </div>
             )}
           </div>
@@ -218,19 +215,19 @@ const Header = () => {
               <div className="absolute top-full left-0 mt-1 bg-card border border-border rounded-lg shadow-lg py-1 min-w-[220px] z-[100] animate-fade-in">
                 <button onClick={() => { navigate("/lich-su-mua"); setHistoryOpen(false); }}
                   className="flex items-center gap-2 w-full px-4 py-2.5 text-sm text-foreground hover:bg-muted transition-colors">
-                  <ShoppingCart className="w-4 h-4 text-primary" /> LSMH - Lịch sử mua hàng
+                  <ShoppingCart className="w-4 h-4 text-primary" /> Lịch sử mua hàng
                 </button>
                 <button onClick={() => { navigate("/lich-su-nap"); setHistoryOpen(false); }}
                   className="flex items-center gap-2 w-full px-4 py-2.5 text-sm text-foreground hover:bg-muted transition-colors">
-                  <Wallet className="w-4 h-4 text-primary" /> LSNT - Lịch sử nạp tiền
+                  <Wallet className="w-4 h-4 text-primary" /> Lịch sử nạp tiền
                 </button>
                 <button onClick={() => { navigate("/bien-dong-so-du"); setHistoryOpen(false); }}
                   className="flex items-center gap-2 w-full px-4 py-2.5 text-sm text-foreground hover:bg-muted transition-colors">
-                  <FileText className="w-4 h-4 text-primary" /> BDSD - Biến động số dư
+                  <FileText className="w-4 h-4 text-primary" /> Biến động số dư
                 </button>
                 <button onClick={() => { navigate("/lich-su-cay-thue"); setHistoryOpen(false); }}
                   className="flex items-center gap-2 w-full px-4 py-2.5 text-sm text-foreground hover:bg-muted transition-colors">
-                  <Package className="w-4 h-4 text-accent" /> LSCT - Lịch sử cày thuê
+                  <Package className="w-4 h-4 text-accent" /> Lịch sử cày thuê
                 </button>
               </div>
             )}
