@@ -44,14 +44,50 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="mt-8 pt-6 border-t border-border text-center text-xs text-muted-foreground">
-          © 2026 ZONOshop. Uy tín tạo nên thương hiệu! 🎮
-
+        <div className="mt-8 pt-6 border-t border-border text-center">
+          {/* Dòng bản quyền cũ */}
+          <p className="text-xs text-muted-foreground">
+            © 2026 ZONOshop. Uy tín tạo nên thương hiệu! 🎮
+          </p>
+          
+          {/* Dòng CODE BY - CÓ HIỆU ỨNG PHÁT SÁNG */}
+          <p className="text-sm md:text-base font-medium text-foreground/70 mt-3">
+            CODE BY{" "}
+            <a 
+              href="https://www.facebook.com/ank.kiet.2604/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-base md:text-lg font-bold text-primary transition-all duration-300 inline-flex items-center gap-1 animate-pulse-glow hover:animate-none hover:scale-105"
+              style={{
+                textShadow: "0 0 5px #8b5cf6, 0 0 10px #c084fc, 0 0 15px #a78bfa",
+                animation: "glowPulse 2s ease-in-out infinite"
+              }}
+            >
+              Anh Kiet
+              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+          </p>
         </div>
       </div>
+
+      {/* Style cho hiệu ứng phát sáng */}
+      <style>{`
+        @keyframes glowPulse {
+          0%, 100% {
+            text-shadow: 0 0 5px #8b5cf6, 0 0 10px #c084fc;
+          }
+          50% {
+            text-shadow: 0 0 15px #a78bfa, 0 0 25px #c084fc, 0 0 35px #8b5cf6;
+          }
+        }
+        .animate-pulse-glow {
+          animation: glowPulse 2s ease-in-out infinite;
+        }
+      `}</style>
     </footer>
   );
 };
 
 export default Footer;
-
