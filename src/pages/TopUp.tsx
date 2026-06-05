@@ -149,9 +149,9 @@ const TopUp = () => {
           <>
             <section className="bg-card border border-primary p-6 neon-card space-y-5">
               <h1 className="text-xl font-bold text-foreground">-LƯU Ý QUAN TRỌNG:</h1>
-              <p className="text-sm font-bold text-foreground">! +) Ngân Hàng Bản Việt (Vietcapital Bank, Bv Bank) đều là 1 loại. Không quét nhầm QR, chỉ copy đúng thông tin.</p>
-              <p className="text-sm font-bold text-foreground">!! +) AE NẠP ZLP VUI LÒNG KHÔNG QUÉT MÃ QR, CHỈ ĐƯỢC COPY THÔNG TIN DÁN VÀO.</p>
-              <p className="text-sm text-muted-foreground">Min BANK là 2k, chuyển thấp hơn sẽ không được cộng. Nhập đúng số tài khoản, số tiền và nội dung chuyển khoản để hệ thống tự động xác nhận.</p>
+              <p className="text-sm font-bold text-foreground">❗ +) NẾU QUÁ 15 PHÚT MÀ TIỀN CHƯA VÀO THÌ LIÊN HỆ ADMIN ĐỂ ĐƯỢC HỖ TRỢ.</p>
+              <p className="text-sm font-bold text-foreground">❗ +) VUI LÒNG NHẬP ĐÚNG NỘI DUNG CHUYỂN KHOẢN VÀ TÀI KHOẢN, NẾU SAI ND THÌ LIÊN HỆ ADMIN ĐỂ ĐƯỢC HỖ TRỢ SỚM NHẤT.</p>
+              <p className="text-sm text-muted-foreground">Min BANK là 10k, chuyển thấp hơn sẽ không được cộng. Nhập đúng số tài khoản, số tiền và nội dung chuyển khoản để hệ thống tự động xác nhận.</p>
             </section>
             
             {/* ĐÃ XOÁ BẢNG KHUYẾN MÃI */}
