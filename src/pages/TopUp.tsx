@@ -207,7 +207,7 @@ const TopUp = () => {
               </section>
               <section className="bg-card border border-border p-6 neon-card space-y-3">
                 <h2 className="text-xl font-bold text-foreground">Lưu Ý</h2>
-                {["KHÁCH HÀNG VUI LÒNG NHẬP ĐÚNG MÃ VÀ SERI THẺ", "NHẬP SAI MỆNH GIÁ THẺ SẼ BỊ TRỪ 50% - 90% GIÁ TRỊ THẺ", "THẺ ĐÚNG - TIỀN SẼ VÀO NGAY SAU VÀI GIÂY", "NẾU THẺ CHỜ XỬ LÝ QUÁ LÂU HÃY LIÊN HỆ ADMIN"].map(t => <p key={t} className="text-sm font-bold text-foreground">▶ {t}</p>)}
+                {["KHÁCH HÀNG VUI LÒNG NHẬP ĐÚNG MÃ VÀ SERI THẺ", "NHẬP SAI MỆNH GIÁ THẺ SẼ BỊ TRỪ 100% GIÁ TRỊ THẺ", "THẺ ĐÚNG - TIỀN SẼ VÀO NGAY SAU VÀI GIÂY", "NẾU THẺ CHỜ XỬ LÝ QUÁ LÂU HÃY LIÊN HỆ ADMIN"].map(t => <p key={t} className="text-sm font-bold text-foreground">▶ {t}</p>)}
                 <div className="flex items-start gap-2 bg-destructive/10 border border-destructive/30 rounded-lg p-3"><AlertTriangle className="w-4 h-4 text-destructive shrink-0 mt-0.5" /><p className="text-xs text-destructive">Nhập sai mệnh giá sẽ không được hoàn tiền.</p></div>
               </section>
             </div>
