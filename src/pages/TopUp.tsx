@@ -40,7 +40,7 @@ const HistoryTable = ({ rows, title }: { rows: TopupRequest[]; title: string }) 
             <th className="px-3 py-3 text-left font-bold text-foreground">Trạng thái</th>
             <th className="px-3 py-3 text-left font-bold text-foreground">Thời gian</th>
             <th className="px-3 py-3 text-left font-bold text-foreground">Lý do</th>
-          </tr>
+           </tr>
         </thead>
         <tbody>
           {rows.length === 0 ? (
@@ -153,11 +153,10 @@ const TopUp = () => {
               <p className="text-sm font-bold text-foreground">!! +) AE NẠP ZLP VUI LÒNG KHÔNG QUÉT MÃ QR, CHỈ ĐƯỢC COPY THÔNG TIN DÁN VÀO.</p>
               <p className="text-sm text-muted-foreground">Min BANK là 2k, chuyển thấp hơn sẽ không được cộng. Nhập đúng số tài khoản, số tiền và nội dung chuyển khoản để hệ thống tự động xác nhận.</p>
             </section>
-            <section className="bg-card border border-border neon-card overflow-hidden">
-              <table className="w-full text-sm"><thead><tr className="bg-card border-b border-border"><th className="px-4 py-3 text-left">#</th><th className="px-4 py-3 text-left">Số tiền nạp lớn hơn hoặc bằng</th><th className="px-4 py-3 text-left">Khuyến mãi thêm</th></tr></thead><tbody>{[[1000000,15],[100000,10],[50000,6],[10000,5]].map((r,i)=><tr key={i} className="border-b border-border"><td className="px-4 py-3">{i+1}</td><td className="px-4 py-3 text-primary font-bold">{formatVND(r[0])}</td><td className="px-4 py-3 text-destructive font-bold">{r[1]}%</td></tr>)}</tbody></table>
-            </section>
             
-            {/* Chỉ giữ SePay - đã xoá MB Bank và ZaloPay */}
+            {/* ĐÃ XOÁ BẢNG KHUYẾN MÃI */}
+            
+            {/* Chỉ giữ SePay */}
             <section className="bg-card border border-border p-6 neon-card space-y-5">
               <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
                 <Landmark className="w-5 h-5 text-primary" /> Nạp tiền theo hoá đơn
