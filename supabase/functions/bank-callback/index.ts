@@ -15,7 +15,7 @@ serve(async (req) => {
   try {
     const { transfer_content, amount, secret_key } = await req.json();
 
-    // Validate secret key to prevent unauthorized calls
+    // 🔥 GIỮ LẠI secret key để bảo vệ
     const WEBHOOK_SECRET = Deno.env.get("TOPUP_WEBHOOK_SECRET");
     if (!WEBHOOK_SECRET || secret_key !== WEBHOOK_SECRET) {
       return new Response(
@@ -33,7 +33,7 @@ serve(async (req) => {
     }
 
     // Extract NNQxxx code from transfer content
-    const match = transfer_content.toUpperCase().match(/NNQ\d{3}/);
+    const match = transfer_content.toUpperCase().match(/NNQ\d{3,6}/);
     if (!match) {
       return new Response(
         JSON.stringify({ error: "No valid NNQ code found in transfer content", transfer_content }),
@@ -41,7 +41,7 @@ serve(async (req) => {
       );
     }
 
-    const NNQCode = match[0];
+    const nnqCode = match[0];
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -51,20 +51,18 @@ serve(async (req) => {
     const { data: profile, error: profileError } = await supabase
       .from("profiles")
       .select("user_id, balance, display_name, transfer_code")
-      .eq("transfer_code", NNQCode)
+      .eq("transfer_code", nnqCode)
       .single();
 
     if (profileError || !profile) {
       return new Response(
-        JSON.stringify({ error: "No user found with transfer code: " + NNQCode }),
+        JSON.stringify({ error: "No user found with transfer code: " + nnqCode }),
         { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
-    // Calculate bonus: under 50k → +10%, 50k+ → +5%
-    const bonusRate = amount < 50000 ? 0.10 : 0.05;
-    const bonusAmount = Math.floor(amount * bonusRate);
-    const creditAmount = amount + bonusAmount;
+    // 🔥 KHÔNG KHUYẾN MÃI - cộng đúng số tiền nạp
+    const creditAmount = amount;
 
     // Create approved topup_request
     const { error: insertError } = await supabase.from("topup_requests").insert({
@@ -72,7 +70,7 @@ serve(async (req) => {
       amount: creditAmount,
       method: "Chuyển khoản ATM/ZaloPay",
       status: "approved",
-      note: `Nội dung: ${transfer_content} | Gốc: ${amount}đ + Bonus ${bonusRate * 100}%: ${bonusAmount}đ`,
+      note: `Nội dung: ${transfer_content} | Số tiền: ${amount}đ`,
     });
 
     if (insertError) {
@@ -84,9 +82,10 @@ serve(async (req) => {
     }
 
     // Credit balance
+    const newBalance = (profile.balance || 0) + creditAmount;
     const { error: updateError } = await supabase
       .from("profiles")
-      .update({ balance: profile.balance + creditAmount })
+      .update({ balance: newBalance })
       .eq("user_id", profile.user_id);
 
     if (updateError) {
@@ -97,18 +96,15 @@ serve(async (req) => {
       );
     }
 
-    console.log(`Topup success: ${NNQCode} → ${profile.display_name} → +${creditAmount}đ (${amount} + ${bonusAmount} bonus)`);
+    console.log(`✅ Nạp thành công: ${nnqCode} → ${profile.display_name} → +${creditAmount}đ`);
 
     return new Response(
       JSON.stringify({
         success: true,
-        transfer_code: NNQCode,
+        transfer_code: nnqCode,
         user: profile.display_name,
-        original_amount: amount,
-        bonus_rate: `${bonusRate * 100}%`,
-        bonus_amount: bonusAmount,
-        credit_amount: creditAmount,
-        new_balance: profile.balance + creditAmount,
+        amount: creditAmount,
+        new_balance: newBalance,
       }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
