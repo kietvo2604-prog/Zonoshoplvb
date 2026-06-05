@@ -33,7 +33,7 @@ const TopUpGuide = () => {
         <div className="bg-muted rounded-xl p-5 border border-border relative overflow-hidden">
           <div className="absolute top-3 right-3">
             <span className="gradient-accent text-accent-foreground text-xs font-bold px-3 py-1 rounded-full">
-              +10% 🎁
+              Không chiết khấu
             </span>
           </div>
           <div className="flex items-center gap-2 mb-4">
@@ -43,9 +43,9 @@ const TopUpGuide = () => {
           <ul className="space-y-2 text-sm text-muted-foreground">
             <li className="flex items-center gap-2">
               <Gift className="w-4 h-4 text-neon-orange shrink-0" />
-              <span><strong className="text-neon-orange">ƯU ĐÃI:</strong> Nhận +10% giá trị nạp!</span>
+              <span><strong className="text-neon-orange">KHÔNG CHIẾT KHẤU:</strong> Nhận 100% giá trị nạp!</span>
             </li>
-            <li className="text-xs mt-2">Ví dụ: Nạp 30k → nhận 33k. Nạp 100k → nhận 105k (từ 50k chỉ +5%).</li>
+            <li className="text-xs mt-2">Ví dụ: Nạp 30k → nhận 30k. Nạp 100k → nhận 100k .</li>
             <li className="text-xs">Hỗ trợ: Momo, ZaloPay, chuyển khoản ngân hàng.</li>
           </ul>
         </div>
