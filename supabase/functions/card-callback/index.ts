@@ -1,17 +1,18 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { createHash } from "https://deno.land/std@0.168.0/crypto/mod.ts";
+import { crypto } from "https://deno.land/std@0.168.0/crypto/mod.ts";
+import { encode as hexEncode } from "https://deno.land/std@0.168.0/encoding/hex.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type",
+    "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
 async function md5(message: string): Promise<string> {
-  const hash = createHash("md5");
-  hash.update(message);
-  return hash.toString();
+  const msgUint8 = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest("MD5", msgUint8);
+  return new TextDecoder().decode(hexEncode(new Uint8Array(hashBuffer)));
 }
 
 serve(async (req) => {
@@ -26,7 +27,7 @@ serve(async (req) => {
     const TSR_PARTNER_KEY = Deno.env.get("TSR_PARTNER_KEY");
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // Parse callback data
+    // Parse callback data - could be form-urlencoded or JSON
     let data: Record<string, string>;
     const contentType = req.headers.get("content-type") || "";
     
@@ -39,6 +40,7 @@ serve(async (req) => {
     } else if (contentType.includes("application/json")) {
       data = await req.json();
     } else {
+      // Try to parse as form data from URL
       const body = await req.text();
       data = {};
       new URLSearchParams(body).forEach((value, key) => {
@@ -56,6 +58,8 @@ serve(async (req) => {
       amount,
       code: card_code,
       serial: card_serial,
+      telco,
+      trans_id,
       callback_sign,
       message,
     } = data;
@@ -67,23 +71,10 @@ serve(async (req) => {
       );
     }
 
-    // Verify callback_sign
-    if (callback_sign && card_code && card_serial) {
-      let isValid = false;
-      
-      // Thử với GTF key
-      if (GTF_PARTNER_KEY) {
-        const gtfSign = await md5(GTF_PARTNER_KEY + card_code + card_serial);
-        if (gtfSign === callback_sign) isValid = true;
-      }
-      
-      // Thử với TSR key
-      if (TSR_PARTNER_KEY && !isValid) {
-        const tsrSign = await md5(TSR_PARTNER_KEY + card_code + card_serial);
-        if (tsrSign === callback_sign) isValid = true;
-      }
-      
-      if (!isValid) {
+    // Verify callback_sign if we have partner_key
+    if ((GTF_PARTNER_KEY || TSR_PARTNER_KEY) && callback_sign && card_code && card_serial) {
+      const validSigns = await Promise.all([GTF_PARTNER_KEY, TSR_PARTNER_KEY].filter(Boolean).map((key) => md5(key! + card_code + card_serial)));
+      if (!validSigns.includes(callback_sign)) {
         console.error("Invalid callback_sign!", { received: callback_sign });
         return new Response(
           JSON.stringify({ error: "Invalid signature" }),
@@ -92,7 +83,7 @@ serve(async (req) => {
       }
     }
 
-    // Find topup_request
+    // Find the topup_request by request_id
     const { data: topupRequest, error: findError } = await supabase
       .from("topup_requests")
       .select("*")
@@ -100,13 +91,14 @@ serve(async (req) => {
       .single();
 
     if (findError || !topupRequest) {
-      console.error("Topup request not found:", request_id);
+      console.error("Topup request not found for request_id:", request_id);
       return new Response(
         JSON.stringify({ error: "Request not found" }),
         { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
+    // Already processed
     if (topupRequest.status !== "pending") {
       return new Response(
         JSON.stringify({ success: true, message: "Already processed" }),
@@ -118,9 +110,12 @@ serve(async (req) => {
     const actualValue = parseInt(value || amount || "0");
     const declaredVal = parseInt(declared_value || "0");
 
+    // Status codes: 1 = success, 2 = wrong amount, 3 = failed/invalid
     if (cardStatus === 1 || cardStatus === 2) {
+      // Card is valid - credit the actual value (after 20% tax)
       const creditAmount = Math.floor(actualValue * 0.8);
 
+      // Get user profile and update balance
       const { data: profile } = await supabase
         .from("profiles")
         .select("balance")
@@ -134,9 +129,10 @@ serve(async (req) => {
           .eq("user_id", topupRequest.user_id);
       }
 
+      // Update topup_request
       const resultNote = cardStatus === 2
-        ? `Sai mệnh giá. Khai: ${declaredVal}, Thực: ${actualValue}. +${creditAmount}đ`
-        : `Thẻ hợp lệ ${actualValue}đ, +${creditAmount}đ`;
+        ? `Thẻ đúng nhưng sai mệnh giá. Khai báo: ${declaredVal}, Thực tế: ${actualValue}. Cộng ${creditAmount}đ`
+        : `Thẻ hợp lệ. Mệnh giá: ${actualValue}. Cộng ${creditAmount}đ`;
 
       await supabase
         .from("topup_requests")
@@ -148,18 +144,19 @@ serve(async (req) => {
         })
         .eq("id", topupRequest.id);
 
-      console.log(`✅ Approved: user ${topupRequest.user_id} +${creditAmount}đ`);
+      console.log(`Card approved for user ${topupRequest.user_id}: +${creditAmount}đ`);
     } else {
+      // Card failed (status 3 or other)
       await supabase
         .from("topup_requests")
         .update({
           status: "rejected",
           card_result: JSON.stringify(data),
-          note: topupRequest.note + ` | Thẻ không hợp lệ: ${message || "Sai hoặc đã dùng"}`,
+          note: topupRequest.note + ` | Thẻ không hợp lệ: ${message || "Thẻ sai hoặc đã sử dụng"}`,
         })
         .eq("id", topupRequest.id);
 
-      console.log(`❌ Rejected: user ${topupRequest.user_id}`);
+      console.log(`Card rejected for user ${topupRequest.user_id}`);
     }
 
     return new Response(
