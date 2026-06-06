@@ -1,18 +1,16 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { crypto } from "https://deno.land/std@0.168.0/crypto/mod.ts";
-import { encode as hexEncode } from "https://deno.land/std@0.168.0/encoding/hex.ts";
+import { createHash } from "https://deno.land/std@0.168.0/crypto/mod.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
 async function md5(message: string): Promise<string> {
-  const msgUint8 = new TextEncoder().encode(message);
-  const hashBuffer = await crypto.subtle.digest("MD5", msgUint8);
-  return new TextDecoder().decode(hexEncode(new Uint8Array(hashBuffer)));
+  const hash = createHash("md5");
+  hash.update(message);
+  return hash.toString();
 }
 
 serve(async (req) => {
@@ -23,7 +21,6 @@ serve(async (req) => {
   try {
     const { telco, code, serial, amount, user_id, topup_request_id } = await req.json();
 
-    // Validate inputs
     if (!telco || !code || !serial || !amount || !user_id) {
       return new Response(
         JSON.stringify({ error: "Missing required fields" }),
@@ -35,15 +32,28 @@ serve(async (req) => {
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
+    // Đọc cấu hình từ shop_settings
     const { data: apiSetting } = await supabase
       .from("shop_settings")
       .select("value")
       .eq("key", "charge_card_api")
       .maybeSingle();
+
     const provider = apiSetting?.value === "thesieure" ? "thesieure" : "gachthefast";
-    const partnerId = provider === "thesieure" ? Deno.env.get("TSR_PARTNER_ID") : Deno.env.get("GTF_PARTNER_ID");
-    const partnerKey = provider === "thesieure" ? Deno.env.get("TSR_PARTNER_KEY") : Deno.env.get("GTF_PARTNER_KEY");
-    const endpoint = provider === "thesieure" ? "https://thesieure.com/chargingws/v2" : "https://gachthefast.com/chargingws/v2";
+    
+    let partnerId: string | undefined;
+    let partnerKey: string | undefined;
+    let endpoint: string;
+
+    if (provider === "thesieure") {
+      partnerId = Deno.env.get("TSR_PARTNER_ID");
+      partnerKey = Deno.env.get("TSR_PARTNER_KEY");
+      endpoint = "https://thesieure.com/chargingws/v2";
+    } else {
+      partnerId = Deno.env.get("GTF_PARTNER_ID");
+      partnerKey = Deno.env.get("GTF_PARTNER_KEY");
+      endpoint = "https://gachthefast.com/chargingws/v2";
+    }
 
     if (!partnerId || !partnerKey) {
       return new Response(
@@ -52,17 +62,19 @@ serve(async (req) => {
       );
     }
 
-    // Generate unique request_id
     const request_id = `${Date.now()}_${Math.random().toString(36).substring(2, 10)}`;
     const command = "charging";
-
-    // Build sign: md5(partner_key + code + command + partner_id + request_id + serial + telco)
-    // telco is UPPERCASE, rest is lowercase
     const telcoUpper = telco.toUpperCase();
+
+    // Tạo chữ ký - thứ tự đúng cho TheSieuRe
     const signString = partnerKey + code + command + partnerId + request_id + serial + telcoUpper;
     const sign = await md5(signString);
 
-    // Send to gachthefast.com API
+    console.log("Provider:", provider);
+    console.log("Request ID:", request_id);
+    console.log("Sign String:", signString);
+
+    // Gửi request đến API đối tác
     const formData = new URLSearchParams();
     formData.append("telco", telcoUpper);
     formData.append("code", code);
@@ -73,8 +85,6 @@ serve(async (req) => {
     formData.append("command", command);
     formData.append("sign", sign);
 
-    console.log(`Sending card to ${provider}:`, { telco: telcoUpper, amount, request_id });
-
     const apiResponse = await fetch(endpoint, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -82,12 +92,16 @@ serve(async (req) => {
     });
 
     const result = await apiResponse.json();
-    console.log(`${provider} response:`, result);
+    console.log("API Response:", result);
 
+    // Cập nhật topup_request nếu có ID
     if (topup_request_id) {
       await supabase
         .from("topup_requests")
-        .update({ request_id, card_result: JSON.stringify({ provider, ...result }) })
+        .update({ 
+          request_id, 
+          card_result: JSON.stringify({ provider, ...result }) 
+        })
         .eq("id", topup_request_id);
     }
 
