@@ -189,7 +189,7 @@ const ProductCard = ({ id, name, price, numericPrice, stock, description, catego
             <div className="space-y-1">
               <p className="text-xs font-bold text-foreground">Giá</p>
               <span className={`text-lg font-bold ${isBoost ? "text-orange-400" : "text-yellow-500"}`}>
-                {user ? price : "Ẩn"}
+                {user ? price : "Đăng nhập để xem giá!"}
               </span>
             </div>
           </div>
