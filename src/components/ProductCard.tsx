@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ShoppingCart, Eye, Package, Loader2, Zap, User, TrendingUp, Clock } from "lucide-react";
+import { ShoppingCart, Eye, Package, Loader2, Zap, User, TrendingUp, Clock, CheckCircle2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -148,9 +148,27 @@ const ProductCard = ({ id, name, price, numericPrice, stock, description, catego
 
         {/* NỘI DUNG */}
         <div className="p-4 space-y-4">
-          <p className={`text-sm line-clamp-4 min-h-[80px] ${isBoost ? "text-muted-foreground" : "text-foreground"}`}>
-            {description}
-          </p>
+          {/* PHẦN HIỂN THỊ MÔ TẢ ĐÃ SỬA */}
+          {description.split("\n").filter(line => line.trim()).length > 1 || description.includes("\n") ? (
+            <ul className="space-y-1.5 min-h-[80px]">
+              {description.split("\n").map((line, idx) => {
+                const trimmed = line.trim();
+                if (!trimmed) return null;
+                return (
+                  <li key={idx} className="flex items-start gap-2 text-sm">
+                    <CheckCircle2 className="w-4 h-4 text-green-500 shrink-0 mt-0.5" />
+                    <span className={`leading-snug ${isBoost ? "text-muted-foreground" : "text-foreground"}`}>
+                      {trimmed}
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
+          ) : (
+            <p className={`text-sm min-h-[80px] ${isBoost ? "text-muted-foreground" : "text-foreground"}`}>
+              {description}
+            </p>
+          )}
 
           {/* THÔNG SỐ - KHÁC BIỆT */}
           <div className={`grid ${isBoost ? "grid-cols-2" : "grid-cols-3"} items-center text-center border-y py-3 gap-2 ${
