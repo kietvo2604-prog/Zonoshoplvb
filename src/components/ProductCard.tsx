@@ -55,7 +55,7 @@ const ProductCard = ({ id, name, price, numericPrice, stock, description, catego
     const r = data as any;
     if (!r?.success) { toast({ title: "❌ " + (r?.error || "Đặt thất bại"), variant: "destructive" }); return; }
     setShowBoost(false);
-    toast({ title: "✅ Đã đặt dịch vụ cày thuê!", description: `Mã đơn: ${r.order_code}` });
+    toast({ title: "✅ Đã đặt đơn!", description: `Mã đơn: ${r.order_code}` });
     window.location.href = "/lich-su-cay-thue";
   };
 
@@ -118,7 +118,7 @@ const ProductCard = ({ id, name, price, numericPrice, stock, description, catego
         }`}>
           {isBoost ? (
             <span className="flex items-center gap-1">
-              <Zap className="w-3 h-3" /> CÀY THUÊ
+              <Zap className="w-3 h-3" /> GAMEPASS
             </span>
           ) : (
             <span className="flex items-center gap-1">
@@ -140,7 +140,7 @@ const ProductCard = ({ id, name, price, numericPrice, stock, description, catego
             </h3>
             {isBoost && (
               <p className="text-xs text-orange-400/70 flex items-center gap-1 mt-1">
-                <Clock className="w-3 h-3" /> Dịch vụ cày thuê 24/7
+                <Clock className="w-3 h-3" /> DONE GAMEPASS 24/7
               </p>
             )}
           </div>
@@ -216,7 +216,7 @@ const ProductCard = ({ id, name, price, numericPrice, stock, description, catego
                 } hover:opacity-90 disabled:opacity-50`}
               >
                 {buying ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : isBoost ? <Zap className="w-3.5 h-3.5" /> : <ShoppingCart className="w-3.5 h-3.5" />}
-                {buying ? "Đang xử lý..." : !isBoost && stock <= 0 ? "Hết hàng" : isBoost ? "ĐẶT CÀY THUÊ" : "MUA NGAY"}
+                {buying ? "Đang xử lý..." : !isBoost && stock <= 0 ? "Hết hàng" : isBoost ? "ĐẶT HÀNG" : "MUA NGAY"}
               </button>
             ) : (
               <Link to="/dang-nhap" className="flex items-center justify-center gap-1.5 px-3 py-2 gradient-primary rounded-full text-xs font-bold text-primary-foreground hover:opacity-90 transition-opacity">
