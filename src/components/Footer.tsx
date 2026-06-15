@@ -54,7 +54,7 @@ const Footer = () => {
           <p className="text-sm md:text-base font-medium text-foreground/70 mt-3">
             CODE BY{" "}
             <a 
-              href="https://www.facebook.com/ank.kiet.2604/" 
+              href="https://www.facebook.com/profile.php?id=61588297479720" 
               target="_blank" 
               rel="noopener noreferrer"
               className="text-base md:text-lg font-bold text-primary transition-all duration-300 inline-flex items-center gap-1 animate-pulse-glow hover:animate-none hover:scale-105"
